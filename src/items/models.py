@@ -5,6 +5,7 @@ from django.conf import settings
 
 class BaseItem(models.Model):
     name = models.CharField("Item name", max_length=100)
+    price_per_piece = models.IntegerField()
     slug = models.UUIDField(default=uuid.uuid4, blank=True, editable=False)
     # Add more user profile fields here. Make sure they are nullable
     # or with default values
@@ -18,6 +19,15 @@ class BaseItem(models.Model):
         abstract = True
 
 
-class Medicine(BaseItem):
+class PerPiece(BaseItem):
+    #per bottle or thing
     def __str__(self):
-        return "{} item's information". format(self.name)
+        return "{}'s Information". format(self.name)
+
+class PerWeight(BaseItem):
+    def __str__(self):
+        return "{}'s Information". format(self.name)
+
+class PerLength(BaseItem):
+    def __str__(self):
+        return "{}'s  Information". format(self.name)

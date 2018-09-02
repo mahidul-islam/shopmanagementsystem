@@ -1,3 +1,8 @@
 from django.contrib import admin
+from items.models import PerWeight, PerPiece, PerLength
 
-# Register your models here.
+admin.site.register(PerPiece)
+
+admin.site.register(PerLength)
+
+admin.site.register(PerWeight)
