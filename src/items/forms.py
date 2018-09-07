@@ -6,4 +6,4 @@ class CustomPerPieceAdminForm(forms.ModelForm):
 
     class Meta:
         model = PerPiece
-        fields = ['name', 'price', 'picture', 'description',]
+        fields = []

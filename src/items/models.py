@@ -15,13 +15,32 @@ class BaseItem(models.Model):
     # Add more user profile fields here. Make sure they are nullable
     # or with default values
     picture = models.ImageField('Item picture',
-                                upload_to='profile_pics/%Y-%m-%d/',
+                                upload_to='item_pics/%Y-%m-%d/',
                                 null=True,
                                 blank=True)
-    description = models.CharField("Short description", max_length=200, blank=True, null=True)
+    description = models.TextField("Short description", max_length=400, blank=True, null=True)
 
     creation_date = models.DateTimeField(auto_now_add=True) #timestamp
     last_updated = models.DateTimeField(auto_now=True)
+
+    # Error for uncommenting the thing...
+    # Reverse accessor for 'PerLength.created_by' clashes with reverse accessor for 'PerLength.updated_by'
+    # ====================================================================================================
+    # created_by = models.ForeignKey(settings.AUTH_USER_MODEL,
+    #                                on_delete=models.SET_NULL,
+    #                                blank = True,
+    #                                null = True,)
+
+    updated_by = models.ForeignKey(settings.AUTH_USER_MODEL,
+                                   on_delete=models.SET_NULL,
+                                   blank = True,
+                                   null = True,)
+
+    def save(self, request):
+        # TODO: access the logged in user from views.py and pass this to the form
+        # self.updated_by = request.user
+        super(BaseItem, self).save(*args, **kwargs)
+
     class Meta:
         abstract = True
 

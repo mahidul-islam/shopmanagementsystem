@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% load staticfiles %}
+{% load thumbnail %}
+
+{% block title %}{{ block.super }}Item{% endblock %}
+
+{% block container %}
+<!-- This linebreaks are for unknown important reasons -->
+<div class="container profile-head">
+  <div class="row">
+    <div class="col-sm-10">
+      <h1>{{ show_item.name }}</h1>
+      </div>
+      <!-- TODO: make the image bigger -->
+    <div class="col-sm-2"><img title="item picture" class="img-circle img-responsive" src="{%  thumbnail show_item.picture|default:'default_item.jpeg' 140x140 crop  %}">
+    </div>
+  </div>
+</div>
+{% endblock %}
