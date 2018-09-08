@@ -6,12 +6,12 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from . import models
 
 
-class ShowCustomer(LoginRequiredMixin, generic.TemplateView):
-    template_name = "customer/show_one_customer.html"
+class ShowProvider(LoginRequiredMixin, generic.TemplateView):
+    template_name = "provider/show_one_provider.html"
     http_method_names = ['get']
 
     def get(self, request, *args, **kwargs):
         slug = self.kwargs.get('slug')
-        customer = get_object_or_404(models.Customer, slug=slug)
-        kwargs['show_customer'] = customer
+        provider = get_object_or_404(models.Provider, slug=slug)
+        kwargs['show_provider'] = provider
         return super().get(request, *args, **kwargs)

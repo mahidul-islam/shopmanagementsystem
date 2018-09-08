@@ -1,7 +1,5 @@
 from django.contrib import admin
-# this code does not work i don't know why
-# from customer.models import customer
-from . import models as customer_model
+from . import models as provider_model
 # for using permalink only...
 from django.urls import reverse
 from django.utils.html import format_html
@@ -10,20 +8,20 @@ from django.forms import Textarea
 from django.db import models
 
 
-class CustomerAdmin(admin.ModelAdmin):
+class ProviderAdmin(admin.ModelAdmin):
     fields = [('name', 'slug'),
               ('age', 'phone_number', 'picture'),
-              ('sex', 'email_address', 'is_vip'),
+              ('is_reputed', 'email_address', 'is_vip'),
               'address',
               ('creation_date', 'made_vip_by'),
               'description']
     #must for not creating error
     readonly_fields = ['slug', 'creation_date']
-    list_display = ('name', 'permalink', 'sex', 'is_vip', 'made_vip_by', 'creation_date')
-    list_filter = ('is_vip', 'sex', 'made_vip_by', 'creation_date')
+    list_display = ('name', 'permalink', 'is_reputed', 'is_vip', 'made_vip_by', 'creation_date')
+    list_filter = ('is_vip', 'is_reputed', 'made_vip_by', 'creation_date')
 
     def permalink(self, obj):
-        url = reverse("customer:show_one_customer",
+        url = reverse("provider:show_one_provider",
                       kwargs={"slug": obj.slug})
         # Unicode hex b6 is the Pilcrow sign
         return format_html('<a href="{}">{}</a>'.format(url, '\xb6'))
@@ -33,4 +31,4 @@ class CustomerAdmin(admin.ModelAdmin):
 
 
 #admin.site.unregister(PerPiece)
-admin.site.register(customer_model.Customer, CustomerAdmin)
+admin.site.register(provider_model.Provider, ProviderAdmin)

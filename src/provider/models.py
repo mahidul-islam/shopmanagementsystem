@@ -4,11 +4,10 @@ from django.utils import timezone
 from django.db import models
 from django.conf import settings
 
-class Customer(models.Model):
-    name = models.CharField("Customer name", max_length = 100)
+class Provider(models.Model):
+    name = models.CharField("Provider name", max_length = 100)
     age = models.IntegerField(null=True, blank=True)
-    user_sex = (('MALE', 'Male'), ('FEMALE', 'Female'))
-    sex = models.CharField(max_length=6, default='Male', choices=user_sex)
+    is_reputed = models.BooleanField(default=False)
     slug = models.UUIDField(default=uuid.uuid4, blank=True, editable=False)
     email_address = models.EmailField(null=True, blank=True)
     phone_number = models.CharField(null=True, blank=True, max_length=15)
@@ -18,8 +17,8 @@ class Customer(models.Model):
                                    on_delete=models.SET_NULL,
                                    blank = True,
                                    null = True,)
-    picture = models.ImageField('Customer photo',
-                                upload_to='customer_pics/%Y-%m-%d/',
+    picture = models.ImageField('Provider photo',
+                                upload_to='provider_pics/%Y-%m-%d/',
                                 null=True,
                                 blank=True)
     description = models.TextField("Short description", max_length=400, blank=True, null=True)
@@ -32,4 +31,4 @@ class Customer(models.Model):
     def save(self, *args, **kwargs):
         # TODO: access the logged in user from views.py and pass this to the form just the problelm of items
         # self.updated_by = request.user
-        super(Customer, self).save(*args, **kwargs)
+        super(Provider, self).save(*args, **kwargs)

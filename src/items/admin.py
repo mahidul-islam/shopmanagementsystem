@@ -1,6 +1,6 @@
 from django.contrib import admin
 from items.models import PerWeight, PerPiece, PerLength
-from items.forms import CustomPerPieceAdminForm
+# from items.forms import CustomPerPieceAdminForm
 # for using permalink only...
 from django.urls import reverse
 from django.utils.html import format_html
@@ -10,7 +10,7 @@ from django.db import models
 
 
 class PerPieceAdmin(admin.ModelAdmin):
-    form = CustomPerPieceAdminForm
+    #form = CustomPerPieceAdminForm
     fields = [('name', 'slug'),
               ('price', 'not_in_stock', 'need_to_stock'),
               'picture',

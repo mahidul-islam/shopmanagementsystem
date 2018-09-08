@@ -76,7 +76,11 @@ INSTALLED_APPS = (
 
     'profiles',
     'accounts',
+
+    # added by me
     'items',
+    'customer',
+    'provider',
 )
 
 MIDDLEWARE = [

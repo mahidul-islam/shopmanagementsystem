@@ -5,6 +5,8 @@ from django.urls import include, path
 import profiles.urls
 import accounts.urls
 import items.urls
+import customer.urls
+import provider.urls
 from . import views
 
 # Personalized admin site settings like title and header
@@ -15,9 +17,12 @@ urlpatterns = [
     path('', views.HomePage.as_view(), name='home'),
     path('about/', views.AboutPage.as_view(), name='about'),
     path('users/', include(profiles.urls)),
-    path('items/', include(items.urls)),
     path('admin/', admin.site.urls),
     path('', include(accounts.urls)),
+    #added by me
+    path('items/', include(items.urls)),
+    path('customer/', include(customer.urls)),
+    path('provider/', include(provider.urls)),
 ]
 
 # User-uploaded files like profile pics need to be served in development
