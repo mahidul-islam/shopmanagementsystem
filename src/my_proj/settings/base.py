@@ -78,7 +78,7 @@ INSTALLED_APPS = (
     'accounts',
 
     # added by me
-    'items',
+    'products',
     'customer',
     'provider',
 )

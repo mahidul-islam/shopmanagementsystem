@@ -3,25 +3,31 @@ import uuid
 from django.utils import timezone
 from django.db import models
 from django.conf import settings
+from .utils import unique_slug_generator
+from django.db.models.signals import pre_save
 
-class BaseItem(models.Model):
-    title = models.CharField("Item name", max_length=100)
-    price = models.DecimalField(decimal_places = 2, max_digits = 20)
-    available_stock = models.IntegerField(default = 0)
-    required_stock = models.IntegerField(default = 1)
-    not_in_stock = models.BooleanField(default=True)
-    need_to_stock = models.BooleanField(default=True)
-    slug = models.UUIDField(default=uuid.uuid4, blank=True, editable=False)
-    # Add more user profile fields here. Make sure they are nullable
+class BaseProduct(models.Model):
+    title =             models.CharField("Item name", max_length=100)
+    price =             models.DecimalField(decimal_places = 2, max_digits = 20)
+    available_stock =   models.PositiveIntegerField(default = 0)
+    required_stock =    models.PositiveIntegerField(default = 1)
+    not_in_stock =      models.BooleanField(default=True)
+    need_to_stock =     models.BooleanField(default=True)
+    active =            models.BooleanField(default=True)
+    #to add slug useful to the user we use the later method instead of first
+    #slug = models.UUIDField(default=uuid.uuid4, blank=True, editable = False)
+    slug =              models.SlugField(blank=True, unique=True)
+
+    # Make sure they are nullable
     # or with default values
-    picture = models.ImageField('Item picture',
+    picture =           models.ImageField('Item picture',
                                 upload_to='item_pics/%Y-%m-%d/',
                                 null=True,
                                 blank=True)
-    description = models.TextField("Short description", max_length=400, blank=True, null=True)
+    description =       models.TextField("Short description", max_length=400, blank=True, null=True)
 
-    creation_date = models.DateTimeField(auto_now_add=True) #timestamp
-    last_updated = models.DateTimeField(auto_now=True)
+    creation_date =     models.DateTimeField(auto_now_add=True) #timestamp
+    last_updated =      models.DateTimeField(auto_now=True)
 
     # Error for uncommenting the thing...
     # Reverse accessor for 'PerLength.created_by' clashes with reverse accessor for 'PerLength.updated_by'
@@ -31,7 +37,7 @@ class BaseItem(models.Model):
     #                                blank = True,
     #                                null = True,)
 
-    updated_by = models.ForeignKey(settings.AUTH_USER_MODEL,
+    updated_by =        models.ForeignKey(settings.AUTH_USER_MODEL,
                                    on_delete=models.SET_NULL,
                                    blank = True,
                                    null = True,)
@@ -39,7 +45,7 @@ class BaseItem(models.Model):
     def save(self, *args, **kwargs):
         # TODO: access the logged in user from views.py and pass this to the form
         # self.updated_by = request.user
-        super(BaseItem, self).save(*args, **kwargs)
+        super(BaseProduct, self).save(*args, **kwargs)
 
     class Meta:
         abstract = True
@@ -47,7 +53,7 @@ class BaseItem(models.Model):
 
 # class PerPiece(BaseItem):
 #     #per bottle or thing
-#     def __str__(self):https://www.google.com/search?client=ubuntu&hs=YUW&channel=fs&biw=1299&bih=639&tbm=isch&sa=1&ei=Fi4FXNz-D4jFvQTnoLe4DA&q=t+shirt+sexiest&oq=t+shirt+sexiest&gs_l=img.3..0i8i30.1962.6872..7680...0.0..0.451.2063.0j3j2j2j1......0....1..gws-wiz-img.......0i19j0i30i19j0i8i30i19.2AzPlZmfm6Y#imgrc=_
+#     def __str__(self):_
 #         return "{}'s Information". format(self.name)
 #
 # class PerWeight(BaseItem):
@@ -59,6 +65,15 @@ class BaseItem(models.Model):
 #         return "{}'s  Information". format(self.name)
 
 
-class Product(BaseItem):
+class Product(BaseProduct):
     def __str__(self):
         return "{}'s Information". format(self.title)
+
+
+def product_pre_save_receiever(sender, instance, *args, **kwargs):
+    if not instance.slug:
+        instance.slug = unique_slug_generator(instance)
+
+
+
+pre_save.connect(product_pre_save_receiever, sender=Product)

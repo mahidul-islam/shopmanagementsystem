@@ -4,7 +4,7 @@ from django.conf.urls.static import static
 from django.urls import include, path
 import profiles.urls
 import accounts.urls
-import items.urls
+import products.urls
 import customer.urls
 import provider.urls
 from . import views
@@ -20,9 +20,9 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include(accounts.urls)),
     #added by me
-    path('items/', include(items.urls)),
-    path('customer/', include(customer.urls)),
-    path('provider/', include(provider.urls)),
+    path('products/', include(products.urls)),
+    path('customers/', include(customer.urls)),
+    path('providers/', include(provider.urls)),
 ]
 
 # User-uploaded files like profile pics need to be served in development
