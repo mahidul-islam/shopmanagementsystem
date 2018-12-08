@@ -20,21 +20,21 @@ from . import models
 #        kwargs['show_item'] = item
 #        return super().get(request, *args, **kwargs)
 
-class ShowItem(DetailView):
+class ProductDetailView(DetailView):
     queryset = models.Product.objects.all()
-    template_name = 'items/show_one_item.html'
+    template_name = 'products/show_one_item.html'
 
     def get_object(self, *args, **kwargs):
         request = self.request
         slug = self.kwargs.get('slug')
 
-        # there can be error without try block. add it for multiple object return 
+        # there can be error without try block. add it for multiple object return
         instance = get_object_or_404(models.Product, slug=slug)
         return instance
 
-class ItemListView(ListView):
+class ProductListView(ListView):
     queryset = models.Product.objects.all()
-    template_name = "items/show_all_item.html"
+    template_name = "products/show_all_item.html"
 
     # this let us change the queryset below...s
     # def get_context_data(self, *args, **kwargs):

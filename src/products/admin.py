@@ -23,7 +23,7 @@ class ProductAdmin(admin.ModelAdmin):
     list_filter = ('not_in_stock', 'need_to_stock', 'last_updated')
 
     def permalink(self, obj):
-        url = reverse("products:show_one_item",
+        url = reverse("products:show_one_product",
                       kwargs={"slug": obj.slug})
         # Unicode hex b6 is the Pilcrow sign
         return format_html('<a href="{}">{}</a>'.format(url, '\xb6'))

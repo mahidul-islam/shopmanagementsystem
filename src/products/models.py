@@ -42,6 +42,9 @@ class BaseProduct(models.Model):
                                    blank = True,
                                    null = True,)
 
+    def get_absolute_url(self):
+        return '/products/{}/'.format(self.slug)
+
     def save(self, *args, **kwargs):
         # TODO: access the logged in user from views.py and pass this to the form
         # self.updated_by = request.user
