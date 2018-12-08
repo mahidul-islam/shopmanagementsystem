@@ -23,13 +23,17 @@
     <br><br>
 
     <div class="container">
-        <h2>Item list ......</h2>
-        <hr>
-        {% for obj in object_list %}
-        <p class="lead"> {{ obj.title }}
-            <a href='{{ obj.get_absolute_url }}' > '¶' </a></p>
-        <br>
-        {% endfor %}
+      <h2>Item list ......</h2>
+      <hr>
+      <div class="container">
+        <div class="row">
+          {% for obj in object_list %}
+          <div class="col">
+            {% include 'products/snippets/card.html' with instance=obj %} 
+          </div>
+          {% endfor %}
+        </div>
+      </div>
     </div>
 
 {% endblock container %}
