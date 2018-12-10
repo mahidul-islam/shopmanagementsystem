@@ -8,6 +8,10 @@
 {% block container %}
 
     <div class="row">
+      <div class="col-12 mb-3">
+        <h3 class="lead">Searched for {% if request.GET.q %} <b>{{ request.GET.q }}</b> {% else %} <b>NOTHING</b> please enter some text {% endif %}</h3>
+        <hr>
+      </div>
       {% for obj in object_list %}
       <div class="col">
         {% include 'products/snippets/card.html' with instance=obj %}

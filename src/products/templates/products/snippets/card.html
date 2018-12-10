@@ -1,11 +1,10 @@
-<div class="card" style="width: 18rem;">
+<div class="card" style="width: 22rem;">
   {% if instance.picture %}
     <img class="card-img-top" src="{{ instance.picture.url }}" alt="Card image cap">
   {% endif %}
   <div class="card-body">
     <h5 class="card-title">{{ obj.title }}</h5>
-    <p class="card-text">Some quick example text to build on the card
-      title and make up the bulk of the card's content.</p>
-    <a href="{{ instance.get_absolute_url }}" class="btn btn-primary">View</a>
+    <p class="card-text">{{ instance.description }}</p>
+    <a href="{% url 'products:show_one_product' slug=instance.slug %}" class="btn btn-warning">VIEW</a>
   </div>
 </div>

@@ -5,6 +5,7 @@ from django.db import models
 from django.conf import settings
 from .utils import unique_slug_generator
 from django.db.models.signals import pre_save
+from django.urls import reverse
 
 class BaseProduct(models.Model):
     title =             models.CharField("Item name", max_length=100)
@@ -43,7 +44,9 @@ class BaseProduct(models.Model):
                                    null = True,)
 
     def get_absolute_url(self):
-        return '/products/{}/'.format(self.slug)
+        #this is the easy way
+        #return '/products/{}/'.format(self.slug)
+        reverse('products:show_one_product', kwargs={'slug':self.slug})
 
     def save(self, *args, **kwargs):
         # TODO: access the logged in user from views.py and pass this to the form
