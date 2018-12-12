@@ -1,10 +1,11 @@
-<div class="card" style="width: 22rem;">
+<div class="card" style="width: 18rem;">
   {% if instance.picture %}
     <img class="card-img-top" src="{{ instance.picture.url }}" alt="Card image cap">
   {% endif %}
   <div class="card-body">
     <h5 class="card-title">{{ obj.title }}</h5>
     <p class="card-text">{{ instance.description }}</p>
+    <!-- TODO: change something to go to featured detail from featured list --> 
     <a href="{% url 'products:show_one_product' slug=instance.slug %}" class="btn btn-warning">VIEW</a>
   </div>
 </div>

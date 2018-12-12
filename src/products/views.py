@@ -20,25 +20,37 @@ from . import models
 #        kwargs['show_item'] = item
 #        return super().get(request, *args, **kwargs)
 
+class FeaturedProductDetailView(DetailView):
+    queryset = models.Product.objects.featured()
+    template_name = 'products/show_one_featured_product.html'
+
+
+class FeaturedProductListView(ListView):
+    queryset = models.Product.objects.featured()
+    template_name = 'products/show_all_featured_product.html'
+
+
+
 class ProductDetailView(DetailView):
     queryset = models.Product.objects.all()
-    template_name = 'products/show_one_item.html'
+    #instance = models.Product.objects.get(slug = slug)
+    template_name = 'products/show_one_product.html'
 
-    def get_object(self, *args, **kwargs):
-        request = self.request
-        slug = self.kwargs.get('slug')
-
-        # there can be error without try block. add it for multiple object return
-        instance = get_object_or_404(models.Product, slug=slug)
-        return instance
+    # def get_object(self, *args, **kwargs):
+    #     request = self.request
+    #     slug = self.kwargs.get('slug')
+    #
+    #     # there can be error without try block. add it for multiple object return
+    #     instance = get_object_or_404(models.Product, slug=slug)
+    #     return instance
 
 class ProductListView(ListView):
     queryset = models.Product.objects.all()
-    template_name = "products/show_all_item.html"
+    template_name = "products/show_all_product.html"
 
-    # this let us change the queryset below...s
+    # WE can get and add context in both listview and detailsview with the following method
     # def get_context_data(self, *args, **kwargs):
-    #     context = super(ItemListView, self).get_context_data(*args, **kwargs)
+    #     context = super(ProductListView, self).get_context_data(*args, **kwargs)
     #     print(context)
     #     context['abc'] = 123
     #     return context

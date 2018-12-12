@@ -1,0 +1,10 @@
+<form class="form my-2">
+  <div class="input-group" action="{% url 'search:show_searched_product' %}">
+
+    <input class="form-control" type="text" name='q' placeholder="Search" aria-label="Search">
+    <span class='input-group-btn'>
+      <button class="btn btn-outline-success" type="submit">Search</button>
+    </span>
+
+  </div>
+</form>

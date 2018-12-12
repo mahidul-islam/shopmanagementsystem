@@ -7,6 +7,17 @@ from .utils import unique_slug_generator
 from django.db.models.signals import pre_save
 from django.urls import reverse
 
+
+class ProductManager(models.Manager):
+    def featured(self):
+        return self.get_queryset().filter(featured = True)
+    def get_by_id(self, id):
+        qs = self.get_queryset().filter(id = id)
+        if qs.count() == 1:
+            return qs.first()
+        return None
+
+
 class BaseProduct(models.Model):
     title =             models.CharField("Item name", max_length=100)
     price =             models.DecimalField(decimal_places = 2, max_digits = 20)
@@ -15,6 +26,7 @@ class BaseProduct(models.Model):
     not_in_stock =      models.BooleanField(default=True)
     need_to_stock =     models.BooleanField(default=True)
     active =            models.BooleanField(default=True)
+    featured =          models.BooleanField(default=False)
     #to add slug useful to the user we use the later method instead of first
     #slug = models.UUIDField(default=uuid.uuid4, blank=True, editable = False)
     slug =              models.SlugField(blank=True, unique=True)
@@ -43,6 +55,9 @@ class BaseProduct(models.Model):
                                    blank = True,
                                    null = True,)
 
+
+    objects = ProductManager()
+
     def get_absolute_url(self):
         #this is the easy way
         #return '/products/{}/'.format(self.slug)
@@ -69,7 +84,6 @@ class BaseProduct(models.Model):
 # class PerLength(BaseItem):
 #     def __str__(self):
 #         return "{}'s  Information". format(self.name)
-
 
 class Product(BaseProduct):
     def __str__(self):
