@@ -5,7 +5,8 @@
   <div class="card-body">
     <h5 class="card-title">{{ obj.title }}</h5>
     <p class="card-text">{{ instance.description }}</p>
-    <!-- TODO: change something to go to featured detail from featured list --> 
+    <!-- TODO: change something to go to featured detail from featured list -->
     <a href="{% url 'products:show_one_product' slug=instance.slug %}" class="btn btn-warning">VIEW</a>
+    {% include 'products/snippets/update_cart.html' with product=instance cart=cart %}
   </div>
 </div>

@@ -2,6 +2,7 @@
 {% url 'about' as about_url %}
 {% url 'login' as login_url %}
 {% url 'products:show_all_product' as product_url %}
+{% url 'carts:show_cart' as cart_url %}
 
 
 <nav class="navbar navbar-expand-md navbar-dark bg-dark mb-3">
@@ -21,6 +22,10 @@
       </li>
       <li class="nav-item {% if request.path == product_url %} active {% endif %}">
         <a class="nav-link" href="{% url 'products:show_all_product' %}">Products</a>
+      </li>
+      <li class="nav-item {% if request.path == cart_url %} active {% endif %}">
+        <!-- why not working cart count and active tag -->
+        <a class="nav-link" href="{% url 'carts:show_cart' %}">Cart <sub>{{ request.session.cart_product_count }}</sub> </a>
       </li>
 
       {% if user.is_authenticated %}

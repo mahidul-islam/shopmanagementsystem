@@ -55,9 +55,9 @@ class ProductListView(ListView):
     queryset = models.Product.objects.all()
     template_name = "products/show_all_product.html"
 
-    # WE can get and add context in both listview and detailsview with the following method
-    # def get_context_data(self, *args, **kwargs):
-    #     context = super(ProductListView, self).get_context_data(*args, **kwargs)
-    #     print(context)
-    #     context['abc'] = 123
-    #     return context
+    def get_context_data(self, *args, **kwargs):
+        context = super(ProductListView, self).get_context_data(*args, **kwargs)
+        request = self.request
+        cart_obj, new_obj = Cart.objects.new_or_get(request)
+        context['cart'] = cart_obj
+        return context
