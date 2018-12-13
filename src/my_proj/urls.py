@@ -8,6 +8,7 @@ import products.urls
 import customer.urls
 import provider.urls
 import search.urls
+import carts.urls
 from . import views
 
 # Personalized admin site settings like title and header
@@ -22,6 +23,7 @@ urlpatterns = [
     path('', include(accounts.urls)),
     #added by me
     path('products/', include(products.urls)),
+    path('cart/', include(carts.urls)),
     path('search/', include(search.urls)),
     path('customers/', include(customer.urls)),
     path('providers/', include(provider.urls)),

@@ -7,7 +7,7 @@ from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 #from . import forms
 from . import models
-
+from carts.models import Cart
 
 #class ShowItem(LoginRequiredMixin, generic.TemplateView):
 #    template_name = "items/show_one_item.html"
@@ -35,6 +35,13 @@ class ProductDetailView(DetailView):
     queryset = models.Product.objects.all()
     #instance = models.Product.objects.get(slug = slug)
     template_name = 'products/show_one_product.html'
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(ProductDetailView, self).get_context_data(*args, **kwargs)
+        request = self.request
+        cart_obj, new_obj = Cart.objects.new_or_get(request)
+        context['cart'] = cart_obj
+        return context
 
     # def get_object(self, *args, **kwargs):
     #     request = self.request

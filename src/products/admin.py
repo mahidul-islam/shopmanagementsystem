@@ -15,10 +15,10 @@ class ProductAdmin(admin.ModelAdmin):
     fields = [('title', 'slug'), #
               ('price', 'not_in_stock', 'need_to_stock'),
               ('picture', 'featured'),
-              ('creation_date', 'last_updated', 'updated_by'),
+              ('timestamp', 'last_updated', 'updated_by'),
               'description']
     #must for not creating error
-    readonly_fields = ['slug', 'creation_date', 'last_updated']     #, 'slug'
+    readonly_fields = ['slug', 'timestamp', 'last_updated']     #, 'slug'
     list_display = ('title', 'price', 'permalink','featured', 'not_in_stock', 'need_to_stock', 'last_updated')
     list_filter = ('not_in_stock', 'need_to_stock', 'last_updated')
 

@@ -6,17 +6,28 @@ from django.conf import settings
 from .utils import unique_slug_generator
 from django.db.models.signals import pre_save
 from django.urls import reverse
+from django.db.models import Q
 
+
+class ProductQuerySet(models.query.QuerySet):
+    def active():
+        return self.filter(active = True)
 
 class ProductManager(models.Manager):
     def featured(self):
         return self.get_queryset().filter(featured = True)
+    # def all(self):
+    #     return self.get_queryset().active()
     def get_by_id(self, id):
         qs = self.get_queryset().filter(id = id)
         if qs.count() == 1:
             return qs.first()
         return None
-
+    def search(self, query):
+        lookups =  (Q(title__icontains=query) |
+                    Q(description__icontains=query) |
+                    Q(tag__title__icontains=query))
+        return self.get_queryset().all().filter(lookups).distinct()
 
 class BaseProduct(models.Model):
     title =             models.CharField("Item name", max_length=100)
@@ -39,7 +50,7 @@ class BaseProduct(models.Model):
                                 blank=True)
     description =       models.TextField("Short description", max_length=400, blank=True, null=True)
 
-    creation_date =     models.DateTimeField(auto_now_add=True) #timestamp
+    timestamp =     models.DateTimeField(auto_now_add=True) #timestamp
     last_updated =      models.DateTimeField(auto_now=True)
 
     # Error for uncommenting the thing...
@@ -87,7 +98,7 @@ class BaseProduct(models.Model):
 
 class Product(BaseProduct):
     def __str__(self):
-        return "{}'s Information". format(self.title)
+        return self.title
 
 
 def product_pre_save_receiever(sender, instance, *args, **kwargs):

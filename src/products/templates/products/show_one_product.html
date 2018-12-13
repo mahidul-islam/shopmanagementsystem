@@ -6,8 +6,20 @@
 {% block title %}{{ block.super }}Products{% endblock %}
 
 {% block container %}
-<div class="container">
-  <h1>{{ object.title }}</h1>
+<div class="row">
+  <div class="col-12 col-md-8">
+    <h1>{{ object.title }}</h1>
+    {{ object.timestamp | timesince }} ago
+    <hr>
+    {% if object.picture %}
+      <img src="{{ object.picture.url }}" class='image-fluid'>
+    {% endif %}
+    {{ object.description }}
+  </div>
+  <div class="col-12 col-md-4">
+    <!-- {{ cart.total }} -->
+    {% include 'products/snippets/update_cart.html' with product=object cart=cart %}
+  </div>
 </div>
 
 {% endblock %}
