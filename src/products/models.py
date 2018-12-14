@@ -3,10 +3,11 @@ import uuid
 from django.utils import timezone
 from django.db import models
 from django.conf import settings
-from .utils import unique_slug_generator
 from django.db.models.signals import pre_save
 from django.urls import reverse
 from django.db.models import Q
+
+from my_proj.utils import unique_order_id_generator
 
 
 class ProductQuerySet(models.query.QuerySet):
@@ -31,7 +32,7 @@ class ProductManager(models.Manager):
 
 class BaseProduct(models.Model):
     title =             models.CharField("Item name", max_length=100)
-    price =             models.DecimalField(decimal_places = 2, max_digits = 20)
+    price =             models.DecimalField(decimal_places = 2, max_digits = 50)
     available_stock =   models.PositiveIntegerField(default = 0)
     required_stock =    models.PositiveIntegerField(default = 1)
     not_in_stock =      models.BooleanField(default=True)
@@ -82,7 +83,6 @@ class BaseProduct(models.Model):
     class Meta:
         abstract = True
 
-
 # class PerPiece(BaseItem):
 #     #per bottle or thing
 #     def __str__(self):_
@@ -100,11 +100,8 @@ class Product(BaseProduct):
     def __str__(self):
         return self.title
 
-
 def product_pre_save_receiever(sender, instance, *args, **kwargs):
     if not instance.slug:
         instance.slug = unique_slug_generator(instance)
-
-
 
 pre_save.connect(product_pre_save_receiever, sender=Product)

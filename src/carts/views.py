@@ -2,6 +2,8 @@ from django.shortcuts import render, redirect
 from django.views.generic import TemplateView
 from .models import Cart
 from products.models import Product
+from orders.models import Order
+from accounts.forms import LoginForm
 
 # class cart_home(TemplateView):
 #     #print(self.request.session)
@@ -31,6 +33,25 @@ def cart_update(request):
         else:
             cart_obj.products.add(product_obj)
         request.session['cart_product_count'] = cart_obj.products.count()
-        print(product_id)
-        print(request.session.get('cart_product_count'))
+        # print(product_id)
+        # print(request.session.get('cart_product_count'))
     return redirect("carts:show_cart")
+
+def checkout_cart(request):
+    cart_obj, new_cart_obj = Cart.objects.new_or_get(request)
+    if new_cart_obj or cart_obj.products.count() == 0:
+        return redirect("carts:show_cart")
+    else:
+        order_obj, new_order_obj = Order.objects.get_or_create(cart = cart_obj)
+    user = request.user
+    billing_profile = None
+    login_form = LoginForm()
+
+    if user.is_authenticated:
+        billing_profile = None
+    context = {
+        'login_form':login_form,
+        'object':order_obj,
+        'billing_profile':billing_profile
+    }
+    return render(request, 'carts/checkout.html', {'object':order_obj})
