@@ -26,6 +26,10 @@ class LoginForm(AuthenticationForm):
                    css_class="btn btn-lg btn-primary btn-block"),
         )
 
+class LoginFormByMe(forms.Form):
+    username = forms.CharField()
+    password = forms.CharField(widget=forms.PasswordInput)
+
 
 class SignupForm(authtoolsforms.UserCreationForm):
 

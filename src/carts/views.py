@@ -3,7 +3,7 @@ from django.views.generic import TemplateView
 from .models import Cart
 from products.models import Product
 from orders.models import Order
-from accounts.forms import LoginForm
+from accounts.forms import LoginFormByMe, LoginForm
 
 # class cart_home(TemplateView):
 #     #print(self.request.session)
@@ -54,4 +54,4 @@ def checkout_cart(request):
         'object':order_obj,
         'billing_profile':billing_profile
     }
-    return render(request, 'carts/checkout.html', {'object':order_obj})
+    return render(request, 'carts/checkout.html', context)
